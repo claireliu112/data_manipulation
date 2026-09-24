@@ -38,7 +38,7 @@ select(litters_df, group, litter_number, gd0_weight, pups_born_alive)
 
 select(litters_df, group:gd_of_birth)
 
-select(litters_df, -pups_survive)
+select(litters_df, pups_survive)
 
 select(litters_df, starts_with("gd"), group)
 
@@ -134,4 +134,43 @@ litters_df =
 ```
 
 load pups, clean names, drop missing, keep group and pd varaibles, add pd walk -7
+
+```{r}
+pups_df = 
+  read_csv("data/FAS_pups.csv", skip = 3, na = c("", "NA", ".")) |> 
+  janitor::clean_names() |> 
+  drop_na() |> 
+  select(litter_number, starts_with("pd")) |> 
+  mutate(
+    pd_walk_minus_7 = pd_walk - 7
+  )
+```
+
+Sometimes the first thing isn'st a dataframe
+
+```{r}
+litters_df |> 
+  filter(group %in% c("con7", "con8")) |> 
+  lm(gd18_weight ~ gd0_weight, data = _)
+```
+
+`select` vs `pull`
+
+```{r}
+litters_df |> 
+  select(group)
+
+litters_df |> 
+  pull(group)
+```
+
+never do `$`
+
+```{r}
+litters_df$group
+```
+
+pipes and 
+
+
 
