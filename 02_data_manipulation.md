@@ -483,3 +483,43 @@ arrange(litters_df, desc(pups_born_alive))
     ## 10 Low7  #98                   23.8        43.8          20               9
     ## # ℹ 39 more rows
     ## # ℹ 2 more variables: pups_dead_birth <dbl>, pups_survive <dbl>
+
+## Do manipalation steps…
+
+This is bad
+
+``` r
+# litters_df = read_csv("data/FAS_litter.csv", na = c("", "NA", "."))
+# litters_rename_df = janitor::clean_names(litter_df)
+# litters_with_gd_df = select(litters_rename_df, group, starts_with("gd"))
+# litters_no_na_df = drop_na(litters_with_gd_df)
+# litters_wt_gain_df = mutate(litters_no_na_df, wt_gain = gd18_weight - gd0_weight)
+```
+
+This is worse …
+
+This is good
+
+``` r
+litters_df =
+  read_csv("data/FAS_litters.csv", na = c("", "NA", ".")) |>
+  janitor::clean_names() |> 
+  select(group, starts_with("gd")) |> 
+  drop_na() |> 
+  mutate(
+    wt_gain = gd18_weight - gd0_weight,
+    group = str_to_lower(group)
+  )
+```
+
+    ## Rows: 49 Columns: 8
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (2): Group, Litter Number
+    ## dbl (6): GD0 weight, GD18 weight, GD of Birth, Pups born alive, Pups dead @ ...
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+load pups, clean names, drop missing, keep group and pd varaibles, add
+pd walk -7
